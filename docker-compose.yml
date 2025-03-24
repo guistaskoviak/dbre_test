@@ -1,0 +1,28 @@
+services:
+  pg_master:
+    image: postgres:13
+    container_name: pg_master
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: testDB
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pg_master_data:/var/lib/postgresql/data
+      - ./start_master.sql:/docker-entrypoint-initdb.d/start_master.sql
+    restart: always
+
+  pg_replica:
+    image: postgres:13
+    container_name: pg_replica
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: testDB
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./pg_replica_data:/var/lib/postgresql/data
+      - ./start_replica.sql:/docker-entrypoint-initdb.d/start_replica.sql
+    restart: always
